@@ -7,11 +7,20 @@
 
 class clsLoginScreen : protected clsScreen
 {
+	static void _ShowLockedAfter3TimesLogin()
+	{
+		_DrawScreenHeader("\t Locked Screen");
+
+		cout << "\n\t\t\t\t\tYou are Locked after 3 Trials Login.\n\n";
+	}
+
 	static void _Login()
 	{
 		string UserName, Password;
 		
-		while (true)
+		short _3Times = 3;
+
+		while (_3Times >= 1)
 		{
 			UserName = clsInputValidate::ReadString("\t\t\t\t\tEnter UserName: ");
 			Password = clsInputValidate::ReadString("\t\t\t\t\tEnter Password: ");
@@ -19,11 +28,19 @@ class clsLoginScreen : protected clsScreen
 			CurrentUser = clsUser::Find(UserName, Password);
 			if (!CurrentUser.IsEmpty())
 				break;
-
-			cout << "\n\t\t\t\t\tInvalid UserName/Password.\n\n";
+			--_3Times;
+			cout << "\n\t\t\t\t\tInvalid UserName/Password.";
+			cout << "\n\t\t\t\t\tYou have " << _3Times << " Trials to login\n\n";
 		}
 
-		clsMainScreen::ShowMainMenue();
+		if (_3Times > 0)
+			clsMainScreen::ShowMainMenue();
+		else
+		{
+			_ShowLockedAfter3TimesLogin();
+			exit(0);
+		}
+			
 	}
 
 public:
