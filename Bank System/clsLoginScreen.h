@@ -34,7 +34,11 @@ class clsLoginScreen : protected clsScreen
 		}
 
 		if (_3Times > 0)
+		{
+			CurrentUser.SaveToLogFile();
 			clsMainScreen::ShowMainMenue();
+		}
+			
 		else
 		{
 			_ShowLockedAfter3TimesLogin();
