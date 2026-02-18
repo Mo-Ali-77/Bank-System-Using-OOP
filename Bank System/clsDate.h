@@ -42,8 +42,7 @@ public:
 	clsDate(short DateOrderInYear, short Year)
 	{
 		//This will construct a date by date order in year
-		clsDate Date1 =
-			GetDateFromDayOrderInYear(DateOrderInYear, Year);
+		clsDate Date1 = GetDateFromDayOrderInYear(DateOrderInYear, Year);
 		_Day = Date1.Day;
 		_Month = Date1.Month;
 		_Year = Date1.Year;
@@ -94,6 +93,25 @@ public:
 		Day = now->tm_mday;
 		return clsDate(Day, Month, Year);
 	}
+
+	static string GetSystemTime()
+	{
+		time_t t = time(0);
+		tm* td = localtime(&t);
+
+		string DateTime = "";
+		DateTime += to_string(td->tm_hour);
+		DateTime += ":" + to_string(td->tm_min);
+		DateTime += ":" + to_string(td->tm_sec);
+		
+		return DateTime;
+	}
+
+	static string GetSystemDateTimeString()
+	{
+		return DateToString(GetSystemDate()) + " - " + GetSystemTime();
+	}
+
 	static bool IsValidDate(clsDate Date)
 	{
 		if (Date.Day < 1 || Date.Day>31)

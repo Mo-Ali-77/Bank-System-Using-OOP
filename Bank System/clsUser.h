@@ -5,6 +5,7 @@
 #include "clsString.h"
 #include <vector>
 #include <fstream>
+#include "clsDate.h"
 
 class clsUser : public clsPerson
 {
@@ -143,6 +144,32 @@ class clsUser : public clsPerson
     static clsUser _GetEmptyUserObject()
     {
         return clsUser(_enMode::EmptyMode, "", "", "", "", "", "", 0);
+    }
+
+    string _ConvertUserLoginToLine(string Seperator = "#//#")
+    {
+        string UserRecord = "";
+        UserRecord += clsDate::GetSystemDateTimeString() + Seperator;
+        UserRecord += _UserName + Seperator;
+        UserRecord += _Password + Seperator;
+        UserRecord += to_string(_Permissions);
+
+        return UserRecord;
+    }
+
+    void _SaveToLogFlie()
+    {
+        string ObjToLine = _ConvertUserLoginToLine();
+
+        fstream MyLogFile;
+        MyLogFile.open("LoginRegister.txt", ios::app);
+
+        if (MyLogFile.is_open())
+        {
+            MyLogFile << ObjToLine << endl;
+
+            MyLogFile.close();
+        }
     }
 
 public:
@@ -342,6 +369,11 @@ public:
             return true;
         else
             return false;
+    }
+
+    void SaveToLogFile()
+    {
+        _SaveToLogFlie();
     }
 };
 
