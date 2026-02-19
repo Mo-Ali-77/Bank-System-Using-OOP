@@ -196,7 +196,7 @@ public:
         int Permissions = 0;
     };
 
-    enum enPermissions {eAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4, pUpdateClient = 8, pFindClient = 16, pTransactions = 32, pManageUsers = 64};
+    enum enPermissions {eAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4, pUpdateClient = 8, pFindClient = 16, pTransactions = 32, pManageUsers = 64, pLoginRegister = 128};
 
 	clsUser(_enMode Mode, string FirstName, string LastName, string Email, string Phone, string UserName, string Passwor, int Permissons) : clsPerson(FirstName, LastName, Email, Phone)
 	{
