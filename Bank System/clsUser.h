@@ -172,7 +172,29 @@ class clsUser : public clsPerson
         }
     }
 
+    struct stLoginRegesterRecord;
+    static stLoginRegesterRecord _ConvertLoginRegisterLineToRecord(string Line, string Seprator = "#//#")
+    {
+        vector <string> vLoginRegister = clsString::Split(Line, Seprator);
+
+        stLoginRegesterRecord LRR;
+        LRR.DateTime = vLoginRegister[0];
+        LRR.UserName = vLoginRegister[1];
+        LRR.Password = vLoginRegister[2];
+        LRR.Permissions = stoi(vLoginRegister[3]);
+
+        return LRR;
+    }
+
 public:
+
+    struct stLoginRegesterRecord
+    {
+        string DateTime = "";
+        string UserName = "";
+        string Password = "";
+        int Permissions = 0;
+    };
 
     enum enPermissions {eAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4, pUpdateClient = 8, pFindClient = 16, pTransactions = 32, pManageUsers = 64};
 
@@ -374,6 +396,30 @@ public:
     void SaveToLogFile()
     {
         _SaveToLogFlie();
+    }
+
+    static vector<stLoginRegesterRecord> GetLoginRegisterList()
+    {
+        vector <stLoginRegesterRecord> vLRR;
+        fstream RegisterLogFile;
+
+        RegisterLogFile.open("LoginRegister.txt", ios::in);
+
+        if (RegisterLogFile.is_open())
+        {
+            string Line = "";
+            stLoginRegesterRecord LRR;
+            while (getline(RegisterLogFile, Line))
+            {
+                LRR = _ConvertLoginRegisterLineToRecord(Line);
+                vLRR.push_back(LRR);
+            }
+
+            RegisterLogFile.close();
+        }
+
+        return vLRR;
+        
     }
 };
 
