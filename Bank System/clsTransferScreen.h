@@ -2,6 +2,7 @@
 #include "clsScreen.h"
 #include "clsBankClient.h"
 #include "clsInputValidate.h"
+#include "Gloabl.h"
 
 class clsTransferScreen: protected clsScreen
 {
@@ -49,7 +50,7 @@ class clsTransferScreen: protected clsScreen
 
 			cout << "\n\t\t\t\t\tAre you sure you want to perform this operation? y/n? ";
 
-			if ((tolower(clsInputValidate::ReadChar()) == 'y') && (SourceClient.Transfer(Amount, DestinationClient)))
+			if ((tolower(clsInputValidate::ReadChar()) == 'y') && (SourceClient.Transfer(Amount, DestinationClient, CurrentUser.UserName)))
 			{
 				cout << "\n\t\t\t\t\tTransfer done successfully :-)\n";
 				_PrintClientCard(SourceClient);

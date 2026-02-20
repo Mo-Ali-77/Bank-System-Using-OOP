@@ -5,6 +5,7 @@
 #include "clsString.h"
 #include <vector>
 #include <fstream>
+#include "clsDate.h"
 
 
 class clsBankClient : public clsPerson
@@ -120,6 +121,35 @@ class clsBankClient : public clsPerson
 	static clsBankClient _GetEmptyClientObject()
 	{
 		return clsBankClient(_enMode::EmptyMode, "", "", "", "", "", "", 0);
+	}
+
+	string _ConvertClientLoginToLine(float Amount,clsBankClient DestinationClient, string UserName,string Seperator = "#//#")
+	{
+		string ClientRecord = "";
+		ClientRecord += clsDate::GetSystemDateTimeString() + Seperator;
+		ClientRecord += _AccountNumber + Seperator;
+		ClientRecord += DestinationClient .AccountNumber() + Seperator;
+		ClientRecord += to_string(Amount) + Seperator;
+		ClientRecord += to_string(AccountBalance) + Seperator;
+		ClientRecord += to_string(DestinationClient.AccountBalance) + Seperator;
+		ClientRecord += UserName;
+
+		return ClientRecord;
+	}
+
+	void _SaveTransferToLogFile(float Amount,clsBankClient DestinationClient, string UserName)
+	{
+		string ObjToLine = _ConvertClientLoginToLine(Amount, DestinationClient, UserName);
+
+		fstream MyLogFile;
+		MyLogFile.open("TransferRegister.txt", ios::out | ios::app);
+
+		if (MyLogFile.is_open())
+		{
+			MyLogFile << ObjToLine << endl;
+
+			MyLogFile.close();
+		}
 	}
 
 public:
@@ -311,13 +341,14 @@ public:
 		}
 	}
 
-	bool Transfer(float Amount, clsBankClient& DestinationClient)
+	bool Transfer(float Amount, clsBankClient& DestinationClient, string UserName)
 	{
 		if ((Amount > AccountBalance) || (AccountNumber() == DestinationClient.AccountNumber()))
 			return false;
 
 		Withdraw(Amount);
 		DestinationClient.Deposit(Amount);
+		_SaveTransferToLogFile(Amount, DestinationClient, UserName);
 		return true;
 	}
 
