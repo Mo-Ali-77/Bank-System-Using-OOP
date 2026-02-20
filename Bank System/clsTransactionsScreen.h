@@ -4,15 +4,16 @@
 #include"clsDepositScreen.h"
 #include "clsWithdrawScreen.h"
 #include "clsTotalBalancesScreen.h"
+#include "clsTransferScreen.h"
 
 class clsTransactionsScreen : protected clsScreen
 {
-    enum _eTransactionsMenue {  eDeposit = 1, eWithdraw = 2, eCheckBalance = 3, eBackToMainMenue = 4 };
+    enum _eTransactionsMenue {  eDeposit = 1, eWithdraw = 2, eCheckBalance = 3, eTransfer = 4, eBackToMainMenue = 5 };
 
     static short _ReadMainMenueOptions()
     {
-        cout << setw(37) << left << "" << "Chooce what do you want do? [1 to 4]? ";
-        short Choice = clsInputValidate::ReadShortNumberBetween(1, 4, "\n\t\t\t\t     Enter Number Between 1 to 4? ");
+        cout << setw(37) << left << "" << "Chooce what do you want do? [1 to 5]? ";
+        short Choice = clsInputValidate::ReadShortNumberBetween(1, 5, "\n\t\t\t\t     Enter Number Between 1 to 5? ");
         return Choice;
     }
 
@@ -37,6 +38,11 @@ class clsTransactionsScreen : protected clsScreen
     static void _ShowTotalBalancesScreen()
     {
         clsTotalBalancesScreen::ShowTotalBalances();
+    }
+
+    static void _ShowTransferScreen()
+    {
+        clsTransferScreen::ShowTransferScreen();
     }
 
     static void _PerfromeTransactionsMenueOptions(_eTransactionsMenue TransactionsMenueOption)
@@ -69,6 +75,13 @@ class clsTransactionsScreen : protected clsScreen
 
             break;
 
+        case _eTransactionsMenue::eTransfer:
+
+            clsScreen::_ResetScreen();
+            _ShowTransferScreen();
+            _GoBackToTransactionsMenue();
+            break;
+
         case _eTransactionsMenue::eBackToMainMenue:
 
             // do nothing here the main will handle it :-)
@@ -83,7 +96,8 @@ class clsTransactionsScreen : protected clsScreen
         cout << setw(37) << left << "" << "\t[1] Deposit.\n";
         cout << setw(37) << left << "" << "\t[2] Withdraw.\n";
         cout << setw(37) << left << "" << "\t[3] Total Balances.\n";
-        cout << setw(37) << left << "" << "\t[4] Back to Main Menue.\n";
+        cout << setw(37) << left << "" << "\t[4] Transfer.\n";
+        cout << setw(37) << left << "" << "\t[5] Back to Main Menue.\n";
         cout << setw(37) << left << "" << "===========================================\n";
 
         _PerfromeTransactionsMenueOptions((_eTransactionsMenue)_ReadMainMenueOptions());

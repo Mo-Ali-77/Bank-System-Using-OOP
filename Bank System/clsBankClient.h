@@ -165,23 +165,6 @@ public:
 	}
 	__declspec(property(get = GetAccountBalance, put = SetAccountBalance)) float AccountBalance;
 
-
-	// No UI Related code inside object.
-	/*void Print()
-	{
-		cout << "\nClient Card:";
-		cout << "\n------------------";
-		cout << "\nFirstName: " << FirstName;
-		cout << "\nLastName: " << LastName;
-		cout << "\nFullName: " << FullName();
-		cout << "\nEmail: " << Email;
-		cout << "\nPhone: " << Phone;
-		cout << "\nAcc. Number: " << _AccountNumber;
-		cout << "\nPassword: " << _PinCode;
-		cout << "\nBalance: " << _AccountBalance;
-		cout << "\n------------------\n";
-	}*/
-
 	static clsBankClient Find(string AccountNumber)
 	{
 		vector <clsBankClient> vClients;
@@ -326,6 +309,16 @@ public:
 			Save();
 			return true;
 		}
+	}
+
+	bool Transfer(float Amount, clsBankClient& DestinationClient)
+	{
+		if ((Amount > AccountBalance) || (AccountNumber() == DestinationClient.AccountNumber()))
+			return false;
+
+		Withdraw(Amount);
+		DestinationClient.Deposit(Amount);
+		return true;
 	}
 
 };
