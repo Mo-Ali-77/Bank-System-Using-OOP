@@ -152,7 +152,35 @@ class clsBankClient : public clsPerson
 		}
 	}
 
+	struct stTransferRegisterLog;
+	static stTransferRegisterLog _ConvertLineToTransferRegisterStruct(string Line, string Seprator = "#//#")
+	{
+		vector <string> vTransferRegister = clsString::Split(Line, Seprator);
+
+		stTransferRegisterLog TLR;
+		TLR.DateTime = vTransferRegister[0];
+		TLR.SourceAccount = vTransferRegister[1];
+		TLR.DestintionAccount = vTransferRegister[2];
+		TLR.Amount = stof(vTransferRegister[3]);
+		TLR.S_Balance = stof(vTransferRegister[4]);
+		TLR.Des_Balance = stof(vTransferRegister[5]);
+		TLR.UserName = vTransferRegister[6];
+
+		return TLR;
+	}
+
 public:
+
+	struct stTransferRegisterLog
+	{
+		string DateTime;
+		string SourceAccount;
+		string DestintionAccount;
+		float Amount;
+		float S_Balance;
+		float Des_Balance;
+		string UserName;
+	};
 
 	clsBankClient(_enMode Mode, string FirstName, string LastName, string Email, string Phone, string AccountNumber, string PinCode, float AccountBalance) :clsPerson(FirstName, LastName, Email, Phone)
 	{
@@ -350,6 +378,29 @@ public:
 		DestinationClient.Deposit(Amount);
 		_SaveTransferToLogFile(Amount, DestinationClient, UserName);
 		return true;
+	}
+
+	static vector< stTransferRegisterLog> GetTransferRegisterLog()
+	{
+		vector <stTransferRegisterLog> vTLR;
+		fstream RegisterLogFile;
+
+		RegisterLogFile.open("TransferRegister.txt", ios::in);
+
+		if (RegisterLogFile.is_open())
+		{
+			string Line = "";
+			stTransferRegisterLog TLR;
+			while (getline(RegisterLogFile, Line))
+			{
+				TLR = _ConvertLineToTransferRegisterStruct(Line);
+				vTLR.push_back(TLR);
+			}
+
+			RegisterLogFile.close();
+		}
+
+		return vTLR;
 	}
 
 };
