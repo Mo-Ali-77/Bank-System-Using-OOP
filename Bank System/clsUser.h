@@ -6,6 +6,7 @@
 #include <vector>
 #include <fstream>
 #include "clsDate.h"
+#include "clsUtil.h"
 
 class clsUser : public clsPerson
 {
@@ -22,8 +23,7 @@ class clsUser : public clsPerson
         vector<string> vUserData;
         vUserData = clsString::Split(Line, Seperator);
 
-        return clsUser(_enMode::UpdateMode, vUserData[0], vUserData[1], vUserData[2],
-            vUserData[3], vUserData[4], vUserData[5], stoi(vUserData[6]));
+        return clsUser(_enMode::UpdateMode, vUserData[0], vUserData[1], vUserData[2], vUserData[3], vUserData[4], clsUtil::DecryptText(vUserData[5]), stoi(vUserData[6]));
 
     }
 
@@ -36,7 +36,7 @@ class clsUser : public clsPerson
         UserRecord += User.Email + Seperator;
         UserRecord += User.Phone + Seperator;
         UserRecord += User.UserName + Seperator;
-        UserRecord += User.Password + Seperator;
+        UserRecord += clsUtil::EncryptText(User.Password) + Seperator;
         UserRecord += to_string(User._Permissions);
 
         return UserRecord;
@@ -90,15 +90,11 @@ class clsUser : public clsPerson
                 {
                     DataLine = _ConverUserObjectToLine(U);
                     MyFile << DataLine << endl;
-
                 }
-
             }
 
             MyFile.close();
-
         }
-
     }
 
     void _Update()
@@ -146,12 +142,12 @@ class clsUser : public clsPerson
         return clsUser(_enMode::EmptyMode, "", "", "", "", "", "", 0);
     }
 
-    string _ConvertUserLoginToLine(string Seperator = "#//#")
+    string _PrepareLogInRecord(string Seperator = "#//#")
     {
         string UserRecord = "";
         UserRecord += clsDate::GetSystemDateTimeString() + Seperator;
         UserRecord += _UserName + Seperator;
-        UserRecord += _Password + Seperator;
+        UserRecord += clsUtil::EncryptText(_Password) + Seperator;
         UserRecord += to_string(_Permissions);
 
         return UserRecord;
@@ -159,7 +155,7 @@ class clsUser : public clsPerson
 
     void _SaveToLogFlie()
     {
-        string ObjToLine = _ConvertUserLoginToLine();
+        string ObjToLine = _PrepareLogInRecord();
 
         fstream MyLogFile;
         MyLogFile.open("LoginRegister.txt", ios::app);
@@ -180,7 +176,7 @@ class clsUser : public clsPerson
         stLoginRegesterRecord LRR;
         LRR.DateTime = vLoginRegister[0];
         LRR.UserName = vLoginRegister[1];
-        LRR.Password = vLoginRegister[2];
+        LRR.Password = clsUtil::DecryptText(vLoginRegister[2]);
         LRR.Permissions = stoi(vLoginRegister[3]);
 
         return LRR;
