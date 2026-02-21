@@ -116,6 +116,9 @@ class clsUser : public clsPerson
 
     }
 
+
+
+
     void _AddNew()
     {
 
