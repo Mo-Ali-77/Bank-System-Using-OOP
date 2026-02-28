@@ -1,6 +1,7 @@
 #pragma once
 #include "clsScreen.h"
 #include "clsInputValidate.h"
+#include "clsListCurrenciesScreen.h"
 class clsCurrencyExchangeScreen : clsScreen
 {
     enum enCurrenyMainMenue {
@@ -25,7 +26,7 @@ class clsCurrencyExchangeScreen : clsScreen
 
     static void _ShowListCurrenciesScreen()
     {
-        cout << "List Currency Screen will be here.\n";
+        clsListCurrenciesScreen::ShowListCurrenciesScreen();
     }
 
     static void _ShowFindCurrencyScreen()
