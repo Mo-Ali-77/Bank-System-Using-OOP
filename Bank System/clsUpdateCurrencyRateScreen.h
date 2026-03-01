@@ -6,6 +6,18 @@
 
 class clsUpdateCurrencyRateScreen : protected clsScreen
 {
+	static clsCurrency _ReadCurrency(string Message)
+	{
+		string CurrencyCode = clsInputValidate::ReadString(Message);
+
+		while (!(clsCurrency::IsCurrencyExistByCode(CurrencyCode)))
+		{
+			CurrencyCode = clsInputValidate::ReadString("\n\t\t\t\t\tCurrency Code NOT Found, Enter Another Code: ");
+		}
+
+		return clsCurrency::FindByCode(CurrencyCode);
+	}
+
 	static void _PrintCurrencyCard(clsCurrency Currency)
 	{
 		cout << "\n\t\t\t\t\tCurrency Card:\n";
@@ -20,14 +32,7 @@ class clsUpdateCurrencyRateScreen : protected clsScreen
 
 	static void _UpdateCurrencyRate()
 	{
-		string CurrencyCode = clsInputValidate::ReadString("\n\t\t\t\t\tPlease enter currency Code: ");
-
-		while (!(clsCurrency::IsCurrencyExistByCode(CurrencyCode)))
-		{
-			CurrencyCode = clsInputValidate::ReadString("\n\t\t\t\t\tCurrency Code NOT Found, Enter Another Code: ");
-		}
-
-		clsCurrency Currency = clsCurrency::FindByCode(CurrencyCode);
+		clsCurrency Currency = _ReadCurrency("\n\t\t\t\t\tPlease enter currency Code: ");
 		_PrintCurrencyCard(Currency);
 
 		char Answer = clsInputValidate::ReadChar("\n\t\t\t\t\tAre you sure you want to update rate of this currency? y/n? ");

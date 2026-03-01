@@ -241,6 +241,22 @@ public:
     {
         return _LoadCurrencysDataFromFile();
     }
+
+    float ConvertToUSD(float Amount)
+    {
+        return (float)Amount / Rate();
+    }
+
+    float ConvertToOtherCurrency(float Amount, clsCurrency CurrencyTo)
+    {
+        float ToUSD = ConvertToUSD(Amount);
+
+        if (CurrencyTo.CurrencyCode() == "USD")
+            return ToUSD;
+
+        return (float)ToUSD * CurrencyTo.Rate();
+    }
+
 };
 
 
