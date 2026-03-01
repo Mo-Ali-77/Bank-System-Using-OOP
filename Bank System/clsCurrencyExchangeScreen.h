@@ -2,7 +2,10 @@
 #include "clsScreen.h"
 #include "clsInputValidate.h"
 #include "clsListCurrenciesScreen.h"
-class clsCurrencyExchangeScreen : clsScreen
+#include "clsFindCurrencyScreen.h"
+
+
+class clsCurrencyExchangeScreen :protected clsScreen
 {
     enum enCurrenyMainMenue {
         eListCurrencies = 1, eFindCurrency = 2,
@@ -31,7 +34,7 @@ class clsCurrencyExchangeScreen : clsScreen
 
     static void _ShowFindCurrencyScreen()
     {
-        cout << "List Currency Screen will be here.\n";
+        clsFindCurrencyScreen::ShowFindCurrencyScreen();
     }
 
     static void _ShowUpdateRateScreen()

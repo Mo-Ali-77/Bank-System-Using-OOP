@@ -223,9 +223,16 @@ public:
 
     }
 
-    static bool IsCurrencyExist(string CurrencyCode)
+    static bool IsCurrencyExistByCode(string CurrencyCode)
     {
         clsCurrency C1 = clsCurrency::FindByCode(CurrencyCode);
+        return (!C1.IsEmpty());
+
+    }
+
+    static bool IsCurrencyExistByCountry(string CurrencyCountry)
+    {
+        clsCurrency C1 = clsCurrency::FindByCountry(CurrencyCountry);
         return (!C1.IsEmpty());
 
     }
