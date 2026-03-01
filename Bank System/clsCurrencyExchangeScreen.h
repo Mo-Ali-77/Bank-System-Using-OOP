@@ -3,6 +3,7 @@
 #include "clsInputValidate.h"
 #include "clsListCurrenciesScreen.h"
 #include "clsFindCurrencyScreen.h"
+#include "clsUpdateCurrencyRateScreen.h"
 
 
 class clsCurrencyExchangeScreen :protected clsScreen
@@ -39,7 +40,8 @@ class clsCurrencyExchangeScreen :protected clsScreen
 
     static void _ShowUpdateRateScreen()
     {
-        cout << "List Currency Screen will be here.\n";
+        /*cout << "List Currency Screen will be here.\n";*/
+        clsUpdateCurrencyRateScreen::ShowUpdateCurrencyRate();
     }
 
     static void _ShowCurrencyCalculateScreen()
